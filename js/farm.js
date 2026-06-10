@@ -104,13 +104,13 @@ function buyGPU(model) {
                     updateUI();
                     return;
                 } else {
-                    alert('Недостаточно монет!');
+                    import('./modal.js').then(m => m.showModal('Недостаточно монет!'));
                     return;
                 }
             }
         }
     }
-    alert('Нет свободных слотов! Купите дополнительную серверную стойку.');
+    import('./modal.js').then(m => m.showModal('Нет свободных слотов! Купите дополнительную серверную стойку.'));
 }
 
 export function startCableEvents() {
@@ -131,9 +131,7 @@ dom.fixCableCoins.addEventListener('click', () => {
         state.monitorCableBroken = false;
         dom.cablePopup.style.display = 'none';
         updateUI();
-    } else alert('Недостаточно монет!');
-});
-dom.fixCableAd.addEventListener('click', () => {
-    dom.cablePopup.style.display = 'none';
-    import('./ads.js').then(m => m.showAdForBTC());
+    } else {
+        import('./modal.js').then(m => m.showModal('Недостаточно монет!'));
+    }
 });

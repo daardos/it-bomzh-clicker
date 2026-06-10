@@ -23,6 +23,10 @@
     <div id="main-area">
         <!-- Экран 1: Рабочее место -->
         <div id="workspace" class="screen active">
+            <div class="tutorial-hint" id="tutorial-hint">
+                💡 Кликай по монитору, чтобы зарабатывать!<br>
+                Покупай видеокарты во вкладке «Ферма» для пассивного дохода.
+            </div>
             <div class="room-wall">
                 <div class="poster">HACK THE PLANET</div>
                 <div class="window-frame">
@@ -268,5 +272,22 @@
     </div>
 </div>
 <script type="module" src="js/game.js"></script>
+<!-- SDK Яндекса -->
+<script src="https://yandex.ru/games/sdk/v2"></script>
+<script>
+    // Инициализация SDK и запуск игры после готовности
+    if (typeof YaGames !== 'undefined') {
+        YaGames.init().then(ysdk => {
+            console.log('Яндекс SDK инициализирован');
+            window.ysdk = ysdk;
+            // Запускаем игру
+            import('./js/game.js');
+        });
+    } else {
+        // fallback для локального тестирования без SDK
+        console.warn('SDK Яндекса не загружен, запуск без SDK');
+        import('./js/game.js');
+    }
+</script>
 </body>
 </html>

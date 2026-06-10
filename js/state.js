@@ -1,4 +1,4 @@
-export const state = {
+const _state = {
     coins: 0,
     bitcoins: 0,
     clickPower: 100,
@@ -27,7 +27,6 @@ export const state = {
         psu: 0,
         case: 0,
     },
-    // Престиж и навыки
     prestigeLevel: 0,
     skills: {
         fastFingers: 0,
@@ -35,13 +34,72 @@ export const state = {
         networkChip: 0,
     },
     adViewsForBTC: 0,
-    get hasPC() {
-        return this.pcComponents.case > 0;
-    },
     overheatTimer: null,
     cableEventTimer: null,
 };
 
+Object.defineProperty(_state, 'hasPC', {
+    get() {
+        return this.pcComponents.case > 0;
+    }
+});
+
+// Прокси: запрещает прямую запись, разрешает чтение
+export const state = new Proxy(_state, {
+    set(target, prop, value) {
+        console.warn('Прямое изменение state запрещено. Используйте addCoins, spendCoins и т.д.');
+        return false;
+    },
+    get(target, prop) {
+        return target[prop];
+    }
+});
+
+// Разрешённые функции изменения состояния
+export function addCoins(amount) {
+    _state.coins += amount;
+    _state.totalCoinsEarned += amount;
+}
+export function spendCoins(amount) {
+    if (_state.coins >= amount) {
+        _state.coins -= amount;
+        return true;
+    }
+    return false;
+}
+export function addBitcoins(amount) {
+    _state.bitcoins += amount;
+}
+export function spendBitcoins(amount) {
+    if (_state.bitcoins >= amount) {
+        _state.bitcoins -= amount;
+        return true;
+    }
+    return false;
+}
+export function setPassiveIncome(value) {
+    _state.passiveIncome = value;
+}
+export function setClickPower(value) {
+    _state.clickPower = value;
+}
+export function setProperty(prop, value) {
+    _state[prop] = value;
+}
+export function incrementClicks() {
+    _state.totalClicks++;
+}
+export function incrementAdsWatched() {
+    _state.adsWatched++;
+}
+export function incrementGameTime() {
+    _state.gameTime++;
+}
+export function getStateForSave() {
+    return JSON.parse(JSON.stringify(_state));
+}
+
+// Экспорт конфигураций (неизменяемые константы)
 export const gpuModels = [
     { id: 'gtx1050', name: 'GTX 1050', price: 1000, income: 10, cssClass: '' },
     { id: 'gtx1060', name: 'GTX 1060', price: 2500, income: 25, cssClass: '' },

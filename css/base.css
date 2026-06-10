@@ -174,3 +174,19 @@ body {
         opacity: 0;
     }
 }
+.tutorial-hint {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: #0f0;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    text-align: center;
+    z-index: 15;
+    pointer-events: none;
+    border: 1px solid #0f0;
+    box-shadow: 0 0 10px rgba(0,255,0,0.3);
+}

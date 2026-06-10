@@ -1,4 +1,4 @@
-import { state } from './state.js';
+import { state, addCoins, setProperty, setPassiveIncome, setClickPower, addBitcoins, spendCoins, spendBitcoins, incrementClicks, incrementAdsWatched, incrementGameTime } from './state.js';
 import { dom } from './dom.js';
 import { updateUI } from './ui.js';
 import { initShop } from './shop.js';
@@ -9,15 +9,14 @@ import { initClicks } from './click.js';
 import { initPrestige } from './prestige.js';
 
 export function init() {
-    if (!loadGame()) {
-        // Новая игра
-        // state.coins = 10000000000; // ⚡ временно для теста, потом удалить
+    const loaded = loadGame();
+    if (!loaded) {
+        addCoins(100000); // временно для тестов
         initQuests();
     } else {
         rebuildQuestUI();
     }
 
-    // Клавиатура ноутбука
     const keyboard = document.getElementById('keyboard');
     if (keyboard) {
         keyboard.innerHTML = '';
@@ -36,47 +35,51 @@ export function init() {
     initClicks();
     initPrestige();
 
-    // Перегрев
     function triggerOverheat() {
         if (state.bsodActive || state._finalBought) return;
-        state.bsodActive = true;
+        setProperty('bsodActive', true);
         dom.bsodOverlay.style.display = 'flex';
         dom.laptopScreen.style.background = '#0000aa';
         const duration = Math.max(1, 5 - state.skills.cooling) * 1000;
         setTimeout(() => {
-            state.bsodActive = false;
+            setProperty('bsodActive', false);
             dom.bsodOverlay.style.display = 'none';
             dom.laptopScreen.style.background = state.hasWallpaper ? 'radial-gradient(circle, #003300, #000)' : '';
         }, duration);
     }
     function scheduleOverheat() {
         if (state.overheatTimer) clearTimeout(state.overheatTimer);
-        state.overheatTimer = setTimeout(() => {
+        setProperty('overheatTimer', setTimeout(() => {
             triggerOverheat();
             scheduleOverheat();
-        }, Math.random() * 120000 + 60000);
+        }, Math.random() * 120000 + 60000));
     }
     scheduleOverheat();
 
     if (state.hasMonitor) startCableEvents();
 
-    // Пассивный доход и автосохранение
+    let lastCoins = state.coins;
     setInterval(() => {
         if (state.bsodActive || state._finalBought) return;
-        state.coins += state.passiveIncome;
-        state.totalCoinsEarned += state.passiveIncome;
-        state.gameTime++;
+        addCoins(state.passiveIncome);
+        incrementGameTime();
         updateUI();
         checkQuestProgress();
         saveGame();
+
+        const maxIncrease = state.passiveIncome + (state.clickPower * 10);
+        if (state.coins - lastCoins > maxIncrease + 1000000) {
+            console.warn('Подозрительный скачок баланса! Откат.');
+            spendCoins(state.coins - lastCoins);
+            updateUI();
+        }
+        lastCoins = state.coins;
     }, 1000);
 
-    // Донат (реклама за BTC)
     dom.donateBtn.addEventListener('click', () => {
         import('./ads.js').then(m => m.showAdForBTC());
     });
 
-    // Навигация по вкладкам с полноэкранной рекламой каждые 4 перехода
     const tabs = document.querySelectorAll('.tab');
     const screens = {
         workspace: document.getElementById('workspace'),

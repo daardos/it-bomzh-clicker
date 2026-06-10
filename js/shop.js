@@ -1,7 +1,7 @@
 import { state, pcParts } from './state.js';
 import { dom } from './dom.js';
 import { updateUI, updatePCShopButtons } from './ui.js';
-import { startCableEvents } from './farm.js'; // кабель тоже в ферме? вынесем в отдельный модуль, но пока так
+import { startCableEvents } from './farm.js';
 import { calculatePassiveIncome } from './farm.js';
 
 export function initShop() {

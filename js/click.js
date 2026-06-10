@@ -59,6 +59,8 @@ function handleClick(e) {
     state.coins += add;
     state.totalCoinsEarned += add;
     state.totalClicks++;
+    const hint = document.getElementById('tutorial-hint');
+    if (hint) hint.style.display = 'none';
 
     playClickSound();
 
