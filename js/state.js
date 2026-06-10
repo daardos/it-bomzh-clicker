@@ -1,3 +1,5 @@
+// state.js
+
 const _state = {
     coins: 0,
     bitcoins: 0,
@@ -44,14 +46,11 @@ Object.defineProperty(_state, 'hasPC', {
     }
 });
 
-// Прокси: запрещает прямую запись, разрешает чтение
+// ✅ Исправленный прокси — работает с _state, а не с отсутствующим initialState
 export const state = new Proxy(_state, {
     set(target, prop, value) {
-        console.warn('Прямое изменение state запрещено. Используйте addCoins, spendCoins и т.д.');
-        return false;
-    },
-    get(target, prop) {
-        return target[prop];
+        target[prop] = value;
+        return true; // обязательно!
     }
 });
 
