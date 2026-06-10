@@ -2,8 +2,8 @@ import { state } from './state.js';
 import { updateUI } from './ui.js';
 import { checkQuestProgress } from './quests.js';
 
+// Реклама за Биткоин (3 просмотра = 1 BTC)
 export function showAdForBTC() {
-    // Проверяем наличие SDK
     const adCallback = () => {
         state.adsWatched++;
         state.adViewsForBTC++;
@@ -18,17 +18,39 @@ export function showAdForBTC() {
     if (typeof ysdk !== 'undefined' && ysdk.adv && ysdk.adv.showRewardedVideo) {
         ysdk.adv.showRewardedVideo({
             callbacks: {
-                onOpen: () => console.log('Реклама открыта'),
                 onRewarded: adCallback,
-                onClose: () => console.log('Реклама закрыта'),
                 onError: (err) => {
                     console.error('Ошибка рекламы:', err);
-                    adCallback(); // fallback для теста
+                    // fallback для тестирования без SDK
+                    adCallback();
                 }
             }
         });
     } else {
-        // Заглушка: просто мгновенно начисляем
-        setTimeout(adCallback, 1000);
+        // Заглушка: мгновенное начисление
+        setTimeout(adCallback, 500);
+    }
+}
+
+// Реклама за серверную стойку
+export function showAdForRack(callback) {
+    if (typeof ysdk !== 'undefined' && ysdk.adv && ysdk.adv.showRewardedVideo) {
+        ysdk.adv.showRewardedVideo({
+            callbacks: {
+                onRewarded: () => {
+                    if (callback) callback();
+                },
+                onError: (err) => {
+                    console.error('Ошибка рекламы:', err);
+                    // fallback
+                    if (callback) callback();
+                }
+            }
+        });
+    } else {
+        // Заглушка
+        setTimeout(() => {
+            if (callback) callback();
+        }, 500);
     }
 }

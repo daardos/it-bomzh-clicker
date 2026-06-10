@@ -35,11 +35,15 @@ export function initFarm() {
     renderRacks();
     renderFarmButtons();
     dom.buyRackBtn.addEventListener('click', () => {
-        if (state.coins >= 100000) {
-            state.coins -= 100000;
+    if (state.coins >= 100000) {
+        state.coins -= 100000;
+        addServerRack();
+    } else {
+        // Предложить рекламу за стойку
+        import('./ads.js').then(m => m.showAdForRack(() => {
             addServerRack();
-        } else {
-            import('./ads.js').then(m => m.showAdForBTC());
+            updateUI();
+            }));
         }
     });
 }

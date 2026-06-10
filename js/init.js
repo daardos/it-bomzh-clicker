@@ -10,7 +10,8 @@ import { initPrestige } from './prestige.js';
 
 export function init() {
     if (!loadGame()) {
-        state.coins = 100000; // временно для теста, потом удалить
+        // Новая игра
+        // state.coins = 10000000000; // ⚡ временно для теста, потом удалить
         initQuests();
     } else {
         rebuildQuestUI();
@@ -70,12 +71,12 @@ export function init() {
         saveGame();
     }, 1000);
 
-    // Донат (теперь через рекламу за BTC)
+    // Донат (реклама за BTC)
     dom.donateBtn.addEventListener('click', () => {
         import('./ads.js').then(m => m.showAdForBTC());
     });
 
-    // Навигация по вкладкам
+    // Навигация по вкладкам с полноэкранной рекламой каждые 4 перехода
     const tabs = document.querySelectorAll('.tab');
     const screens = {
         workspace: document.getElementById('workspace'),
@@ -84,6 +85,7 @@ export function init() {
         quests: document.getElementById('quests'),
         prestige: document.getElementById('prestige'),
     };
+    let tabSwitchCount = 0;
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const target = tab.dataset.screen;
@@ -91,6 +93,13 @@ export function init() {
             if (screens[target]) screens[target].classList.remove('hidden-right');
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
+
+            tabSwitchCount++;
+            if (tabSwitchCount % 4 === 0) {
+                if (typeof ysdk !== 'undefined' && ysdk.adv && ysdk.adv.showFullscreenAdv) {
+                    ysdk.adv.showFullscreenAdv();
+                }
+            }
         });
     });
 }
