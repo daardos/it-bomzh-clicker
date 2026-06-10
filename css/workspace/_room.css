@@ -1,0 +1,114 @@
+.room-wall {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 70%;
+    background: radial-gradient(circle at 50% 30%, #2a2a2a, #111);
+    border-bottom: 2px solid #333;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 15px;
+}
+.poster {
+    background: #1e1e1e;
+    border: 1px dashed #555;
+    padding: 5px 10px;
+    color: #e94560;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 0 8px rgba(255,0,0,0.3);
+    position: absolute;
+    top: 20px; left: 20px;
+    transform: rotate(-5deg);
+}
+.window-frame {
+    position: absolute;
+    top: 10px; right: 20px;
+    width: 60px; height: 70px;
+    background: #333;
+    border: 2px solid #555;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.window-glass {
+    width: 100%; height: 100%;
+    background: #0a0a2e;
+    position: relative;
+}
+.rain {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(transparent, transparent 3px, rgba(255,255,255,0.1) 3px, rgba(255,255,255,0.1) 4px);
+    animation: rainDrop 0.5s linear infinite;
+}
+@keyframes rainDrop {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 10px; }
+}
+.moon {
+    position: absolute;
+    top: 5px; right: 5px;
+    width: 12px; height: 12px;
+    background: #ffd700;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #ffd700;
+}
+.clock {
+    position: absolute;
+    top: 25px; right: 90px;
+    color: #888;
+    font-size: 0.8rem;
+}
+.shelf-laptop {
+    display: none;
+    position: absolute;
+    right: 15px;
+    top: 40%;
+    width: 90px;
+    height: 12px;
+    background: #5a3e2b;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.7);
+    transform: perspective(200px) rotateX(-5deg);
+}
+.shelf-laptop::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 10%;
+    width: 80%;
+    height: 4px;
+    background: #3e2a1a;
+    border-radius: 2px;
+}
+.laptop-on-shelf {
+    position: absolute;
+    top: -48px;
+    left: 8px;
+    width: 70px;
+    height: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: rotateX(3deg);
+}
+.laptop-lid {
+    width: 65px;
+    height: 30px;
+    background: #0b1e2a;
+    border: 2px solid #555;
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    transform: rotateX(-20deg);
+    transform-origin: bottom center;
+}
+.laptop-base {
+    width: 70px;
+    height: 10px;
+    background: #333;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.6);
+}

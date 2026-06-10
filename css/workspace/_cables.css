@@ -1,0 +1,45 @@
+/* Провод питания системного блока */
+.pc-power-cable {
+    position: absolute;
+    bottom: -30px;
+    left: 20px;
+    width: 4px;
+    height: 40px;
+    background: #555;
+    z-index: 2;
+    transform: rotate(-15deg);
+    transform-origin: top;
+}
+.pc-power-cable::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: -3px;
+    width: 10px;
+    height: 8px;
+    background: #333;
+    border-radius: 2px;
+}
+
+/* Видеокабель от ПК к монитору (выходит из корпуса) */
+.pc-video-cable {
+    position: absolute;
+    top: 80px;
+    left: 90%;
+    width: 60px;
+    height: 4px;
+    background: #555;
+    z-index: 3;
+    transform: rotate(10deg);
+    transform-origin: left;
+}
+.pc-video-cable::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: -3px;
+    width: 10px;
+    height: 10px;
+    background: #444;
+    border-radius: 2px;
+}

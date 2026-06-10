@@ -1,0 +1,158 @@
+* {
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    font-family: 'Courier New', monospace;
+}
+body {
+    background: #050505;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    color: #fff;
+    touch-action: manipulation;
+}
+#game {
+    width: 100%;
+    max-width: 480px;
+    height: 100vh;
+    background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0,255,0,0.2);
+}
+#top-panel {
+    padding: 10px 15px;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    z-index: 10;
+}
+.currency {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.coin { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
+.btc { color: #f7931a; text-shadow: 0 0 10px #f7931a; }
+#status {
+    position: absolute;
+    top: 50px; left: 15px;
+    font-size: 0.8rem;
+    color: #aaa;
+    z-index: 10;
+    background: rgba(0,0,0,0.7);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+#main-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+.screen {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.hidden-right {
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+}
+.click-effect {
+    position: absolute;
+    color: #0f0;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-shadow: 0 0 10px #0f0;
+    animation: floatUp 0.8s forwards;
+    pointer-events: none;
+    z-index: 51;
+}
+@keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-60px); }
+}
+.bsod-overlay {
+    display: none;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,170,0.9);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 20;
+    color: white;
+    font-size: 1.2rem;
+}
+#tab-bar {
+    display: flex;
+    background: #111;
+    border-top: 1px solid #333;
+}
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 5px;
+    color: #aaa;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+.tab.active {
+    color: #0f0;
+    border-bottom: 3px solid #0f0;
+}
+#workspace {
+    background: #1a1a1a;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    perspective: 800px;
+}
+
+/* Импульс при клике */
+.click-ripple {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple 0.4s ease-out forwards;
+    pointer-events: none;
+    z-index: 50;
+}
+@keyframes ripple {
+    to {
+        transform: translate(-50%, -50%) scale(3);
+        opacity: 0;
+    }
+}
+.stats {
+    display: flex;
+    gap: 15px;
+    font-size: 0.75rem;
+    color: #ccc;
+    margin-left: auto;
+    padding-right: 5px;
+}
+.stats span {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}

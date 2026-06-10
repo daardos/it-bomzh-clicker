@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Бомж-сисадмин: Кликер</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="game">
+    <!-- Верхняя панель -->
+    <div id="top-panel">
+        <div class="currency coin">🪙 <span id="coins">0</span></div>
+        <div class="currency btc">₿ <span id="bitcoins">0</span></div>
+        <div class="stats">
+            <span>💪 <span id="click-power-display">100</span></span>
+            <span>⏳ <span id="passive-display-small">0</span>/сек</span>
+        </div>
+    </div>
+    <div id="status">Ранг: <span id="rank">Бомж-сисадмин</span></div>
+
+    <!-- Основная область -->
+    <div id="main-area">
+        <!-- Экран 1: Рабочее место -->
+        <div id="workspace" class="screen active">
+            <div class="room-wall">
+                <div class="poster">HACK THE PLANET</div>
+                <div class="window-frame">
+                    <div class="window-glass">
+                        <div class="rain"></div>
+                        <div class="moon"></div>
+                    </div>
+                </div>
+                <div class="clock">03:47</div>
+                <div class="shelf-laptop" id="shelf-laptop">
+                    <div class="laptop-on-shelf" id="laptop-on-shelf">
+                        <div class="laptop-lid"></div>
+                        <div class="laptop-base"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="monitor-area" id="monitor-area">
+                <div class="monitor-stand"></div>
+                <div class="monitor-body" id="monitor">
+                    <div class="monitor-screen"></div>
+                    <div class="monitor-label">OLD CRT</div>
+                </div>
+            </div>
+            <div class="pc-monitor-area" id="pc-monitor-area">
+                <div class="pc-monitor-body">
+                    <div class="pc-monitor-screen"></div>
+                    <div class="pc-monitor-label">GAMING DISPLAY</div>
+                </div>
+                <div class="pc-monitor-stand"></div>
+                <div class="pc-video-cable"></div>
+            </div>
+            <div class="desk">
+                <div class="pc-case" id="pc-case">
+                    <div class="pc-body">
+                        <div class="pc-front">
+                            <div class="pc-power-btn"></div>
+                            <div class="pc-fans">
+                                <div class="pc-fan"></div>
+                                <div class="pc-fan"></div>
+                                <div class="pc-fan"></div>
+                            </div>
+                        </div>
+                        <div class="pc-label">GAMING PC</div>
+                        <div class="pc-power-cable"></div>
+                    </div>
+                </div>
+                <div class="mouse-device" id="mouse-device">
+                    <div class="mouse-wheel"></div>
+                    <div class="mouse-logo">⚡</div>
+                </div>
+                <div class="laptop-container" id="laptop-container">
+                    <div class="laptop-screen" id="laptop-screen"></div>
+                    <div class="laptop-keyboard" id="keyboard"></div>
+                    <div class="vent"><div class="smoke"></div></div>
+                </div>
+            </div>
+            <div class="bsod-overlay" id="bsod-overlay">
+                <div>ПЕРЕГРЕВ! Ноут завис на 5 секунд...</div>
+            </div>
+        </div>
+
+        <!-- Экран 2: Магазин -->
+        <div id="shop" class="screen hidden-right">
+            <!-- Базовые предметы -->
+            <div class="shop-item">
+                <span class="shop-img">🖱️</span>
+                <div>
+                    <strong>Игровая мышь — 12 000 🪙</strong><br>
+                    <small>+400 к клику, RGB</small>
+                </div>
+                <button id="buy-mouse">Купить</button>
+            </div>
+            <div class="shop-item">
+                <span class="shop-img">🖥️</span>
+                <div>
+                    <strong>Ультраширокий монитор — 67 000 🪙</strong><br>
+                    <small>Пассивный доход +50/сек, кабель иногда отходит</small>
+                </div>
+                <button id="buy-monitor">Купить</button>
+            </div>
+            <div class="shop-item">
+                <span class="shop-img">💻</span>
+                <div>
+                    <strong>Игровой ноутбук — 200 000 🪙</strong><br>
+                    <small>+200 к клику, неон</small>
+                </div>
+                <button id="buy-laptop">Купить</button>
+            </div>
+            <div class="shop-item">
+                <span class="shop-img">🖼️</span>
+                <div>
+                    <strong>Хакерские обои — 5 ₿</strong><br>
+                    <small>Крутой фон экрана</small>
+                </div>
+                <button id="buy-wallpaper" disabled>Купить</button>
+            </div>
+
+            <!-- Сборка ПК (отображается после покупки игрового ноутбука) -->
+            <div id="pc-parts" style="display:none;">
+                <h3>🛠️ Сборка ПК</h3>
+                <div class="shop-item" id="cpu-item">
+                    <span class="shop-img">🔲</span>
+                    <div>
+                        <strong>Процессор</strong><br>
+                        <small id="cpu-desc">Повышает силу клика на %</small>
+                    </div>
+                    <button id="buy-cpu">Купить</button>
+                </div>
+                <div class="shop-item" id="mb-item">
+                    <span class="shop-img">📟</span>
+                    <div>
+                        <strong>Материнская плата</strong><br>
+                        <small id="mb-desc">Увеличивает пассивный доход на %</small>
+                    </div>
+                    <button id="buy-mb">Купить</button>
+                </div>
+                <div class="shop-item" id="gpu-pc-item">
+                    <span class="shop-img">🎮</span>
+                    <div>
+                        <strong>Видеокарта (для ПК)</strong><br>
+                        <small id="gpu-pc-desc">Добавляет силу клика</small>
+                    </div>
+                    <button id="buy-gpu-pc">Купить</button>
+                </div>
+                <div class="shop-item" id="ram-item">
+                    <span class="shop-img">🧠</span>
+                    <div>
+                        <strong>Оперативная память</strong><br>
+                        <small id="ram-desc">Увеличивает пассивный доход на %</small>
+                    </div>
+                    <button id="buy-ram">Купить</button>
+                </div>
+                <div class="shop-item" id="psu-item">
+                    <span class="shop-img">🔌</span>
+                    <div>
+                        <strong>Блок питания</strong><br>
+                        <small id="psu-desc">Увеличивает пассивный доход на %</small>
+                    </div>
+                    <button id="buy-psu">Купить</button>
+                </div>
+                <div class="shop-item" id="case-item">
+                    <span class="shop-img">🏠</span>
+                    <div>
+                        <strong>Корпус</strong><br>
+                        <small id="case-desc">Появляется корпус на столе, +% пассив</small>
+                    </div>
+                    <button id="buy-case">Купить</button>
+                </div>
+            </div>
+
+            <div class="shop-item" id="final-item" style="display:none;">
+                <span class="shop-img">🤖</span>
+                <div>
+                    <strong>ИИ-Сервер Пентагона — 100 000 000 000 🪙</strong><br>
+                    <small>Финальный взлом</small>
+                </div>
+                <button id="buy-final">Купить</button>
+            </div>
+        </div>
+
+        <!-- Экран 3: Ферма -->
+        <div id="farm" class="screen hidden-right">
+            <div id="racks-container"></div>
+            <div class="farm-buttons" id="farm-buttons"></div>
+            <button id="buy-rack" style="margin-top:10px;">Купить серверную стойку (100 000 🪙 или реклама)</button>
+            <p style="margin-top:10px;">Пассивный доход: <span id="passive-display">0</span> 🪙/сек</p>
+        </div>
+
+        <!-- Экран 4: Квесты -->
+        <div id="quests" class="screen hidden-right">
+            <div id="quests-list"></div>
+            <button class="donate-btn" id="donate-btn">Получить Биткоин (реклама)</button>
+            <div class="ad-timer" id="ad-timer" style="display:none;">Реклама... <span id="ad-countdown">30</span> сек</div>
+        </div>
+
+        <!-- Всплывающее окно с кабелем -->
+        <div class="cable-popup" id="cable-popup">
+            <p>⚠️ Кабель отошёл! Экран тускнеет.</p>
+            <button id="fix-cable-coins">Починить за 1000 🪙</button>
+            <button id="fix-cable-ad">Посмотреть Рекламу</button>
+        </div>
+    </div>
+
+    <!-- Нижняя панель вкладок -->
+    <div id="tab-bar">
+        <div class="tab active" data-screen="workspace">⌨️ Работа</div>
+        <div class="tab" data-screen="shop">🛒 Магазин</div>
+        <div class="tab" data-screen="farm">🔋 Ферма</div>
+        <div class="tab" data-screen="quests">❓ Квесты</div>
+    </div>
+</div>
+
+<!-- Финальный экран -->
+<div id="final-screen">
+    <canvas id="matrix-canvas" class="matrix"></canvas>
+    <div style="position:relative; z-index:10; text-align:center; color:white;">
+        <div style="font-size:3rem;">👑</div>
+        <h1>ДОСТУП ПОЛУЧЕН!</h1>
+        <p>Вы взломали мировую сеть и стали Богом Даркнета! Игра пройдена!</p>
+        <div id="leaderboard" style="margin:20px; background:#222; padding:10px; border-radius:10px;">
+            <p>Ваше время: <span id="final-time">0:00</span></p>
+            <p>🏆 Таблица лидеров (заглушка)</p>
+        </div>
+        <div style="background:#16213e; padding:15px; border-radius:10px; margin-top:20px;">
+            Надоело хакать? Пора расслабиться в нашей желе-раскраске!<br>
+            <a href="#" style="color:#f7931a;">Скачать игру про Слайма</a>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="js/game.js"></script>
+</body>
+</html>
