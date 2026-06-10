@@ -1,0 +1,57 @@
+#prestige {
+    background: #1a1a2e;
+    padding: 20px;
+    overflow-y: auto;
+    color: #eee;
+}
+#prestige h2, #prestige h3 {
+    color: #0ff;
+    margin-bottom: 15px;
+}
+#prestige-info p {
+    margin: 5px 0;
+}
+#prestige-btn {
+    background: #e94560;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+#prestige-btn:disabled {
+    background: #555;
+}
+.skill-card {
+    background: #16213e;
+    border: 1px solid #0f3460;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.skill-card p {
+    margin: 3px 0;
+}
+.skill-card button {
+    background: #f7931a;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+.skill-card button:disabled {
+    background: #555;
+}
+#buy-btc-coins, #sell-btc {
+    background: #f7931a;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin: 5px;
+    cursor: pointer;
+}

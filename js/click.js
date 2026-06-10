@@ -3,7 +3,6 @@ import { dom } from './dom.js';
 import { updateUI } from './ui.js';
 import { checkQuestProgress } from './quests.js';
 
-// === Звук ===
 let audioCtx = null;
 
 function playClickSound() {
@@ -33,7 +32,6 @@ function playClickSound() {
     osc2.stop(now + 0.08);
 }
 
-// === Импульс ===
 function createRipple(x, y) {
     const ripple = document.createElement('div');
     ripple.className = 'click-ripple';
@@ -43,10 +41,9 @@ function createRipple(x, y) {
     ripple.addEventListener('animationend', () => ripple.remove());
 }
 
-// === Обработчик ===
 function handleClick(e) {
     if (state.bsodActive || state.monitorCableBroken) return;
-    if (!e.target.closest('#workspace')) return;
+    if (e.target.closest('#tab-bar')) return;
 
     let base = state.clickPower;
     const gpuLevel = state.pcComponents.gpu || 0;
@@ -55,7 +52,10 @@ function handleClick(e) {
     }
     const cpuLevel = state.pcComponents.cpu || 0;
     const cpuMult = [0, 0.1, 0.25, 0.5, 1.0][cpuLevel] || 0;
-    const add = Math.floor(base * (1 + cpuMult));
+    const prestigeMult = state.prestigeLevel * 0.1;
+    const skillMult = state.skills.fastFingers * 0.1;
+    const totalMult = 1 + cpuMult + prestigeMult + skillMult;
+    const add = Math.floor(base * totalMult);
     state.coins += add;
     state.totalCoinsEarned += add;
     state.totalClicks++;
@@ -68,7 +68,7 @@ function handleClick(e) {
     createRipple(x, y);
 
     const effect = document.createElement('div');
-    effect.className = 'click-effect';
+    effect.className = 'floating-text';
     effect.textContent = '+' + add;
     effect.style.left = x + 'px';
     effect.style.top = y + 'px';
@@ -79,10 +79,13 @@ function handleClick(e) {
     checkQuestProgress();
 }
 
-// Надёжная инициализация: добавляем обработчик после полной загрузки
-window.addEventListener('load', () => {
+export function initClicks() {
     const workspace = document.getElementById('workspace');
-    if (workspace) {
-        workspace.addEventListener('click', handleClick);
+    if (!workspace) {
+        console.error('#workspace не найден!');
+        return;
     }
-});
+    workspace.removeEventListener('click', handleClick);
+    workspace.addEventListener('click', handleClick);
+    console.log('Обработчик клика установлен на #workspace');
+}

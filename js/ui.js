@@ -3,13 +3,29 @@ import { dom } from './dom.js';
 import { calculatePassiveIncome } from './farm.js';
 import { saveGame } from './save.js';
 
+function updatePrestigeUI() {
+    document.getElementById('prestige-level').textContent = state.prestigeLevel;
+    const bonus = state.prestigeLevel * 10;
+    document.getElementById('prestige-bonus').textContent = bonus;
+    document.getElementById('prestige-btn').disabled = state.coins < 100_000_000;
+
+    const updateSkill = (skill, levelId, btnId) => {
+        const level = state.skills[skill];
+        document.getElementById(levelId).textContent = level;
+        document.getElementById(btnId).disabled = state.bitcoins < 1;
+    };
+    updateSkill('fastFingers', 'fast-level', 'buy-fast');
+    updateSkill('cooling', 'cool-level', 'buy-cool');
+    updateSkill('networkChip', 'net-level', 'buy-net');
+}
+
 export function updateUI() {
     // Счетчики
     dom.coinsSpan.textContent = Math.floor(state.coins).toLocaleString();
     dom.bitcoinsSpan.textContent = state.bitcoins;
     dom.passiveDisplay.textContent = state.passiveIncome;
 
-    // Новые индикаторы в верхней панели
+    // Новые индикаторы
     if (dom.clickPowerDisplay) dom.clickPowerDisplay.textContent = state.clickPower;
     if (dom.passiveDisplaySmall) dom.passiveDisplaySmall.textContent = state.passiveIncome;
 
@@ -44,7 +60,7 @@ export function updateUI() {
     // Визуальные обновления мыши
     dom.mouseDevice.classList.toggle('rgb', state.hasMouse);
 
-    // Монитор на стене (старый / ультраширокий)
+    // Монитор на стене
     dom.monitorArea.classList.toggle('ultrawide', state.hasMonitor);
     if (state.hasMonitor) {
         dom.monitorBody.querySelector('.monitor-label').textContent = 'ULTRAWIDE';
@@ -67,15 +83,17 @@ export function updateUI() {
     // Обрыв кабеля монитора
     dom.monitorBody.style.opacity = state.monitorCableBroken ? '0.3' : '1';
 
-    // === ПК, монитор ПК, полка для ноутбука ===
+    // ПК и монитор ПК, полка для ноутбука
     const hasPC = state.pcComponents.case > 0;
-
     dom.pcCase.style.display = hasPC ? 'block' : 'none';
-    if (dom.pcMonitorArea) dom.pcMonitorArea.style.display = hasPC ? 'flex' : 'none';
+    dom.pcMonitorArea.style.display = hasPC ? 'flex' : 'none';
     const shelf = document.getElementById('shelf-laptop');
     if (shelf) shelf.style.display = hasPC ? 'block' : 'none';
     dom.laptopContainer.classList.toggle('shifted', hasPC);
     dom.pcCase.classList.toggle('level2', state.pcComponents.case === 2);
+
+    // Обновление престижа
+    updatePrestigeUI();
 
     // Сохранение
     saveGame();

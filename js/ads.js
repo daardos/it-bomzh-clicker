@@ -1,26 +1,34 @@
-export function showAd(callback) {
-    // Проверяем наличие Яндекс SDK
+import { state } from './state.js';
+import { updateUI } from './ui.js';
+import { checkQuestProgress } from './quests.js';
+
+export function showAdForBTC() {
+    // Проверяем наличие SDK
+    const adCallback = () => {
+        state.adsWatched++;
+        state.adViewsForBTC++;
+        if (state.adViewsForBTC >= 3) {
+            state.bitcoins++;
+            state.adViewsForBTC = 0;
+        }
+        updateUI();
+        checkQuestProgress();
+    };
+
     if (typeof ysdk !== 'undefined' && ysdk.adv && ysdk.adv.showRewardedVideo) {
         ysdk.adv.showRewardedVideo({
             callbacks: {
                 onOpen: () => console.log('Реклама открыта'),
-                onRewarded: () => {
-                    console.log('Награда получена');
-                    if (callback) callback();
-                },
+                onRewarded: adCallback,
                 onClose: () => console.log('Реклама закрыта'),
                 onError: (err) => {
                     console.error('Ошибка рекламы:', err);
-                    // fallback - всё равно даём награду для теста
-                    if (callback) callback();
+                    adCallback(); // fallback для теста
                 }
             }
         });
     } else {
-        // Заглушка для локального запуска: просто задержка 1 сек и награда
-        console.warn('YSANDEX SDK не найден, используется заглушка рекламы');
-        setTimeout(() => {
-            if (callback) callback();
-        }, 1000);
+        // Заглушка: просто мгновенно начисляем
+        setTimeout(adCallback, 1000);
     }
 }

@@ -6,14 +6,12 @@ let cableTimer = null;
 
 export function calculatePassiveIncome() {
     let income = 0;
-    // Монитор
     if (state.hasMonitor) income += 50;
-    // Видеокарты фермы
     gpuModels.forEach(m => {
         const count = state.gpus[m.id] || 0;
         income += m.income * count;
     });
-    // Бонусы от ПК: материнская плата, ОЗУ, БП, корпус
+    // Бонусы от ПК
     const mbLevel = state.pcComponents.mb || 0;
     const ramLevel = state.pcComponents.ram || 0;
     const psuLevel = state.pcComponents.psu || 0;
@@ -22,29 +20,26 @@ export function calculatePassiveIncome() {
     const ramMul = [0, 0.02, 0.05, 0.12][ramLevel] || 0;
     const psuMul = [0, 0.01, 0.04, 0.1][psuLevel] || 0;
     const caseMul = [0, 0.01, 0.03][caseLevel] || 0;
-    const totalMul = 1 + mbMul + ramMul + psuMul + caseMul;
-    state.passiveIncome = Math.floor(income * totalMul);
-    dom.passiveDisplay.textContent = state.passiveIncome;
+    // Престиж и навык "Сетевой чип"
+    const prestigePassiveMult = state.prestigeLevel * 0.1;
+    const networkSkillMult = state.skills.networkChip * 0.05;
+    const totalPassiveMult = 1 + mbMul + ramMul + psuMul + caseMul + prestigePassiveMult + networkSkillMult;
+    state.passiveIncome = Math.floor(income * totalPassiveMult);
+    if (dom.passiveDisplay) dom.passiveDisplay.textContent = state.passiveIncome;
 }
 
 export function initFarm() {
-    // Создаем начальную стойку с 3 слотами
     if (state.serverRacks.length === 0) {
-        state.serverRacks.push({ slots: [ [], [], [] ] }); // каждая полка — массив
+        state.serverRacks.push({ slots: [ [], [], [] ] });
     }
     renderRacks();
-    // Кнопки видеокарт
     renderFarmButtons();
-    // Покупка стойки
     dom.buyRackBtn.addEventListener('click', () => {
         if (state.coins >= 100000) {
             state.coins -= 100000;
             addServerRack();
         } else {
-            // Предложить рекламу
-            if (confirm('Недостаточно монет. Посмотреть рекламу для получения стойки?')) {
-                import('./ads.js').then(m => m.showAd(() => addServerRack()));
-            }
+            import('./ads.js').then(m => m.showAdForBTC());
         }
     });
 }
@@ -56,6 +51,7 @@ function addServerRack() {
 }
 
 function renderRacks() {
+    if (!dom.racksContainer) return;
     dom.racksContainer.innerHTML = '';
     state.serverRacks.forEach((rack, rackIdx) => {
         const rackDiv = document.createElement('div');
@@ -65,8 +61,7 @@ function renderRacks() {
             shelf.className = 'shelf';
             shelf.dataset.rack = rackIdx;
             shelf.dataset.slot = slotIdx;
-            // Визуализируем карты в слоте
-            slot.forEach((gpuId, idx) => {
+            slot.forEach(gpuId => {
                 const gpu = gpuModels.find(m => m.id === gpuId);
                 if (gpu) {
                     const el = document.createElement('span');
@@ -82,6 +77,7 @@ function renderRacks() {
 }
 
 function renderFarmButtons() {
+    if (!dom.farmButtonsDiv) return;
     dom.farmButtonsDiv.innerHTML = gpuModels.map(g =>
         `<button id="buy-${g.id}">${g.name}<span>${g.price} 🪙 | +${g.income}/сек</span></button>`
     ).join('');
@@ -91,7 +87,6 @@ function renderFarmButtons() {
 }
 
 function buyGPU(model) {
-    // Ищем первый слот с местом (макс 5)
     for (let rack of state.serverRacks) {
         for (let slot of rack.slots) {
             if (slot.length < 5) {
@@ -114,7 +109,6 @@ function buyGPU(model) {
     alert('Нет свободных слотов! Купите дополнительную серверную стойку.');
 }
 
-// Кабель для монитора
 export function startCableEvents() {
     if (cableTimer) return;
     cableTimer = setInterval(() => {
@@ -126,7 +120,7 @@ export function startCableEvents() {
     }, 60000);
 }
 
-// Инициализация кабеля
+// Обработчики кабеля
 dom.fixCableCoins.addEventListener('click', () => {
     if (state.coins >= 1000) {
         state.coins -= 1000;
@@ -137,10 +131,5 @@ dom.fixCableCoins.addEventListener('click', () => {
 });
 dom.fixCableAd.addEventListener('click', () => {
     dom.cablePopup.style.display = 'none';
-    import('./ads.js').then(m => m.showAd(() => {
-        state.monitorCableBroken = false;
-        state.adsWatched++;
-        updateUI();
-        import('./quests.js').then(q => q.checkQuestProgress());
-    }));
-}); 
+    import('./ads.js').then(m => m.showAdForBTC());
+});

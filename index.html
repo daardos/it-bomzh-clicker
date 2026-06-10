@@ -198,6 +198,39 @@
             <div class="ad-timer" id="ad-timer" style="display:none;">Реклама... <span id="ad-countdown">30</span> сек</div>
         </div>
 
+                <!-- Экран 5: Престиж и навыки -->
+        <div id="prestige" class="screen hidden-right">
+            <h2>🌟 Престиж и навыки</h2>
+            <div id="prestige-info">
+                <p>Уровень престижа: <span id="prestige-level">0</span></p>
+                <p>Бонус к клику и пассиву: +<span id="prestige-bonus">0</span>%</p>
+                <button id="prestige-btn" disabled>Сбросить прогресс (нужно 100 млн 🪙)</button>
+            </div>
+            <hr>
+            <h3>🛠️ Дерево навыков</h3>
+            <div id="skills-container">
+                <div class="skill-card" id="skill-fast">
+                    <p><strong>Быстрые пальцы</strong> <span id="fast-level">0</span> ур.</p>
+                    <p>+10% к силе клика за уровень</p>
+                    <button id="buy-fast" disabled>Купить (1 BTC)</button>
+                </div>
+                <div class="skill-card" id="skill-cool">
+                    <p><strong>Охлаждение</strong> <span id="cool-level">0</span> ур.</p>
+                    <p>-1 сек к BSOD за уровень (мин. 1 сек)</p>
+                    <button id="buy-cool" disabled>Купить (1 BTC)</button>
+                </div>
+                <div class="skill-card" id="skill-net">
+                    <p><strong>Сетевой чип</strong> <span id="net-level">0</span> ур.</p>
+                    <p>+5% к пассивному доходу за уровень</p>
+                    <button id="buy-net" disabled>Купить (1 BTC)</button>
+                </div>
+            </div>
+            <hr>
+            <h3>💱 Обмен валют</h3>
+            <button id="buy-btc-coins">Купить 1 BTC за 2.5M 🪙</button>
+            <button id="sell-btc">Продать 1 BTC за 200K 🪙</button>
+        </div>
+        
         <!-- Всплывающее окно с кабелем -->
         <div class="cable-popup" id="cable-popup">
             <p>⚠️ Кабель отошёл! Экран тускнеет.</p>
@@ -212,6 +245,8 @@
         <div class="tab" data-screen="shop">🛒 Магазин</div>
         <div class="tab" data-screen="farm">🔋 Ферма</div>
         <div class="tab" data-screen="quests">❓ Квесты</div>
+                <div class="tab" data-screen="prestige">🌟 Престиж</div>
+        <!-- <button onclick="localStorage.removeItem('hackerClickerSave'); location.reload();" style="position:absolute; top:5px; right:5px; z-index:999; background:red; color:white; border:none; padding:5px;">Сбросить всё</button> -->
     </div>
 </div>
 
@@ -232,7 +267,6 @@
         </div>
     </div>
 </div>
-
 <script type="module" src="js/game.js"></script>
 </body>
 </html>

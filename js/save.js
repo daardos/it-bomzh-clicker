@@ -19,6 +19,9 @@ export function saveGame() {
         gameStartTime: state.gameStartTime,
         _finalBought: state._finalBought,
         pcComponents: state.pcComponents,
+        prestigeLevel: state.prestigeLevel,
+        skills: state.skills,
+        adViewsForBTC: state.adViewsForBTC,
     };
     localStorage.setItem('hackerClickerSave', JSON.stringify(data));
 }

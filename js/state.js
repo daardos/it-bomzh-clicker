@@ -7,12 +7,11 @@ export const state = {
     bsodActive: false,
     hasMouse: false,
     hasMonitor: false,
-    hasPCMonitor: false,
     hasLaptop: false,
     monitorCableBroken: false,
     hasWallpaper: false,
-    gpus: {},                 // { modelId: count }
-    serverRacks: [],          // массив объектов { slots: [] } где slots - массивы макс. длины 5
+    gpus: {},
+    serverRacks: [],
     totalClicks: 0,
     totalCoinsEarned: 0,
     gameTime: 0,
@@ -20,23 +19,29 @@ export const state = {
     activeQuests: [],
     gameStartTime: Date.now(),
     _finalBought: false,
-    // Сборка ПК
     pcComponents: {
-        cpu: 0,    // уровень 0-3
+        cpu: 0,
         mb: 0,
         gpu: 0,
         ram: 0,
         psu: 0,
         case: 0,
     },
-    overheatTimer: null,
-    cableEventTimer: null,
-        get hasPC() {
+    // Престиж и навыки
+    prestigeLevel: 0,
+    skills: {
+        fastFingers: 0,
+        cooling: 0,
+        networkChip: 0,
+    },
+    adViewsForBTC: 0,
+    get hasPC() {
         return this.pcComponents.case > 0;
     },
+    overheatTimer: null,
+    cableEventTimer: null,
 };
 
-// Конфигурации (могут быть здесь или отдельно)
 export const gpuModels = [
     { id: 'gtx1050', name: 'GTX 1050', price: 1000, income: 10, cssClass: '' },
     { id: 'gtx1060', name: 'GTX 1060', price: 2500, income: 25, cssClass: '' },
@@ -53,7 +58,6 @@ export const questTemplates = [
     { type: 'ads', desc: 'Посмотреть рекламу {goal} раз', reward: 2, unit: 'раз', currency: 'btc' },
 ];
 
-// Компоненты ПК
 export const pcParts = {
     cpu: [
         { name: 'Intel Core i3', price: 5000, clickMul: 0.1, desc: '+10% к кликам' },

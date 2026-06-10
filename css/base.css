@@ -80,10 +80,6 @@ body {
     pointer-events: none;
     z-index: 51;
 }
-@keyframes floatUp {
-    0% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-60px); }
-}
 .bsod-overlay {
     display: none;
     position: absolute;
@@ -155,4 +151,26 @@ body {
     display: flex;
     align-items: center;
     gap: 3px;
+}
+.floating-text {
+    position: absolute;
+    pointer-events: none;
+    color: #00ffff;
+    font-family: 'Arial Black', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 0 0 10px #00ffff;
+    animation: floatUp 0.8s ease-out forwards;
+    z-index: 9999;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -150%) scale(1.2);
+        opacity: 0;
+    }
 }
